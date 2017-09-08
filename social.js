@@ -84,7 +84,56 @@ var mostFollowers = function(data) {
   console.log(winner + ' has the most followers.');
 };
 
+var mostFollowsOver30 = function (data) {
+  var count = {};
+  for (var user in data) {
+    count[user] = 0;
+    for (var i in data[user].follows) {
+      var userFollow = data[user].follows[i];
+      if (data[userFollow].age > 30) {
+        count[user] += 1;
+      }
+    }
+  }
+  winner = [Object.keys(count)[4]];
+  for (user in count) {
+    if (count[user] > count[winner]) {
+      winner = [user];
+    } else
+    if (count[user] === count[winner]) {
+      winner.push(user);
+    }
+  }
+  console.log(winner + 'follows the most people over 30.');
+};
+
+var mostFollowersOver30 = function(data) {
+  var count = {};
+  for (var user in data) {
+    count[user] = 0;
+    for (var i in data[user].followers) {
+      var userFollow = data[user].followers[i];
+      if (data[userFollow].age > 30) {
+        count[user] += 1;
+      }
+    }
+  }
+  winner = [Object.keys(count)[2]];
+  for (user in count) {
+    if (count[user] > count[winner]) {
+      winner = [user];
+    } else
+    if (count[user] === count[winner]) {
+      winner.push(user);
+    }
+  }
+  console.log(winner + 'has the most followers over 30.');
+};
+
+
 addFollowers(data);
 // listNames(data);
-mostFollows(data);
-mostFollowers(data);
+// mostFollows(data);
+// mostFollowers(data);
+mostFollowsOver30(data);
+mostFollowersOver30(data);
