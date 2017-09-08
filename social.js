@@ -58,8 +58,33 @@ var listNames = function (data) {
   }
 };
 
+var mostFollows = function (data) {
+  var winner = [Object.keys(data)[0]];
+  for (var user in data) {
+    if (data[user].follows.length > data[winner[0]].follows.length) {
+      winner = [user];
+    } else
+    if (data[user].follows.length === data[winner[0]].follows.length) {
+      winner.push(user);
+    }
+  }
+  console.log(winner + ' follows the most people.');
+};
 
-
+var mostFollowers = function(data) {
+  var winner = [Object.keys(data)[0]];
+  for (var user in data) {
+    if (data[user].followers.length > data[winner[0]].followers.length) {
+      winner = [user];
+    } else
+    if (data[user].followers.length === data[winner[0]].followers.length) {
+      winner.push(user);
+    }
+  }
+  console.log(winner + ' has the most followers.');
+};
 
 addFollowers(data);
-listNames(data);
+// listNames(data);
+mostFollows(data);
+mostFollowers(data);
