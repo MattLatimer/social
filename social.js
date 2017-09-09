@@ -36,16 +36,12 @@ var data = {
   Inputs: string[, number]
   Return: array
   Contract: takes a user id from the data set and returns an array
-            of user ids of those who follow the input id. If an age
-            is supplied, only users over that age will be returned.
+            of user ids of those who follow the input id.
 */
-var getFollowers = function(uid, age) {
-  var minAge = (age) ? age : 0;
+var getFollowers = function(uid) {
   var followers = [];
   for (var user in data) {
-    var follows = data[user].follows.includes(uid);
-    var overAge = data[user].age > minAge;
-    if (follows && overAge) {
+    if (data[user].follows.includes(uid)) {
       followers.push(user);
     }
   }
@@ -77,6 +73,7 @@ var idsToName = function(arr) {
 var nameFollows = function(uid) {
   return idsToName(data[uid].follows).join(', ');
 };
+
 /*
   Function Name: nameFollowers
   Inputs: string
@@ -89,22 +86,41 @@ var nameFollowers = function(uid) {
   return idsToName(getFollowers(uid)).join(', ');
 };
 
+/*
+  Function Name: listConnections
+  Inputs: string
+  Return: string
+  Contract: takes a user id from the data set and returns a string
+            that lists their name and the names of all their
+            connections in the network.
+*/
+var listConnections = function(uid) {
+  var message = 'Name: ' + data[uid].name + '\n';
+  message += 'Follows: ' + nameFollows(uid) + '\n';
+  message += 'Followers: ' + nameFollowers(uid) + '\n';
+  return message;
+};
 
-// var listNames = function (data) {
-//   for (var user in data) {
-//     var statement = data[user].name + ' follows ';
-//     for (var i in data[user].follows) {
-//       var userFollows = data[user].follows[i];
-//       statement += data[userFollows].name + ', ';
-//     }
-//     statement += 'and is followed by ';
-//     for (var j in data[user].followers) {
-//       var userFollowers = data[user].followers[j];
-//       statement += data[userFollowers].name + ', ';
-//     }
-//     console.log(statement.slice(0,-2) + '.');
-//   }
-// };
+/*
+  Function Name: fullList
+  Inputs: object
+  Return: string
+  Contract: takes a social network data set and returns a string
+            containing all users names and connections.
+*/
+var fullList = function (dataSet) {
+  message = '';
+  for (var user in dataSet) {
+    message += listConnections(user);
+  }
+  return message;
+};
+
+
+
+
+
+console.log(fullList(data));
 
 // var mostFollows = function (data) {
 //   var winner = [Object.keys(data)[0]];
