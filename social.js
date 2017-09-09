@@ -53,22 +53,26 @@ var getFollowers = function(uid, age) {
   return followers;
 };
 
+/*
+  Function Name: nameFollows
+  Inputs: string
+  Return: string
+  Contract: takes a user id from the data set and returns a string
+            that lists the names of users that the input id follows
+            as comma separated entries.
+*/
+var nameFollows = function(uid) {
+  var nameList = '';
+  for (var user in data[uid].follows) {
+    var userId = data[uid].follows[user];
+    nameList += data[userId].name + ', ';
+  }
+  return nameList.slice(0, -2);
+};
 
+var nameFollowers =
 
-
-
-
-
-// var addFollowers = function(data) {
-//   for (var user in data) {
-//     data[user].followers = [];
-//   }
-//   for (user in data) {
-//     for (var i in data[user].follows) {
-//       data[data[user].follows[i]].followers.push(user);
-//     }
-//   }
-// };
+console.log(nameFollows('f01'));
 
 // var listNames = function (data) {
 //   for (var user in data) {
