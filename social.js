@@ -31,6 +31,30 @@ var data = {
   }
 };
 
+/*
+  Function Name: getFollowers
+  Inputs: string[, number]
+  Return: array
+  Contract: takes a user id from the data set and returns an array
+            of user ids of those who follow the input id. If an age
+            is supplied, only users over that age will be returned.
+*/
+
+var getFollowers = function(uid, age) {
+  var minAge = (age) ? age : 0;
+  var followers = [];
+  for (var user in data) {
+    var follows = data[user].follows.includes(uid);
+    var overAge = data[user].age > minAge;
+    if (follows && overAge) {
+      followers.push(user);
+    }
+  }
+  return followers;
+};
+
+
+
 
 
 
