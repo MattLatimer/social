@@ -140,9 +140,26 @@ var mostFollows = function(dataSet) {
   return idsToName(winners).join(', ');
 };
 
+var mostFollowers = function(dataSet) {
+  count = {};
+  highest = 0;
+  for (var user in dataSet) {
+    count[user] = getFollowers(user).length;
+    highest = (count[user] > highest) ? count[user] : highest;
+  }
+  winners = [];
+  for (var uid in count) {
+    if (count[uid] === highest) {
+      winners.push(uid);
+    }
+  }
+  return idsToName(winners).join(', ');
+};
+
 
 // console.log(fullList(data));
 console.log('Follows the most others: ' + mostFollows(data));
+console.log('Has the most followers: ' + mostFollowers(data));
 
 
 
