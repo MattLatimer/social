@@ -116,24 +116,35 @@ var fullList = function (dataSet) {
   return message;
 };
 
+/*
+  Function Name: mostFollows
+  Inputs: object
+  Return: string
+  Contract: takes a social network data set and returns a string
+            that lists the user names that follow the most others
+            as comma separated entries.
+*/
+var mostFollows = function(dataSet) {
+  count = {};
+  highest = 0;
+  for (var user in dataSet) {
+    count[user] = data[user].follows.length;
+    highest = (count[user] > highest) ? count[user] : highest;
+  }
+  winners = [];
+  for (var uid in count) {
+    if (count[uid] === highest) {
+      winners.push(uid);
+    }
+  }
+  return idsToName(winners).join(', ');
+};
 
 
+// console.log(fullList(data));
+console.log('Follows the most others: ' + mostFollows(data));
 
 
-console.log(fullList(data));
-
-// var mostFollows = function (data) {
-//   var winner = [Object.keys(data)[0]];
-//   for (var user in data) {
-//     if (data[user].follows.length > data[winner[0]].follows.length) {
-//       winner = [user];
-//     } else
-//     if (data[user].follows.length === data[winner[0]].follows.length) {
-//       winner.push(user);
-//     }
-//   }
-//   console.log(winner + ' follows the most people.');
-// };
 
 // var mostFollowers = function(data) {
 //   var winner = [Object.keys(data)[0]];
