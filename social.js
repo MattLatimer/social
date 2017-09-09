@@ -39,7 +39,6 @@ var data = {
             of user ids of those who follow the input id. If an age
             is supplied, only users over that age will be returned.
 */
-
 var getFollowers = function(uid, age) {
   var minAge = (age) ? age : 0;
   var followers = [];
@@ -54,6 +53,20 @@ var getFollowers = function(uid, age) {
 };
 
 /*
+  Function Name: idToName
+  Inputs: array
+  Return: array
+  Contract: takes an array of user ids from the data set and returns
+            an array of user names that match the ids.
+*/
+var idsToName = function(arr) {
+  var nameList = [];
+  for (var i in arr) {
+    nameList.push(data[arr[i]].name);
+  }
+  return nameList;
+};
+/*
   Function Name: nameFollows
   Inputs: string
   Return: string
@@ -62,17 +75,20 @@ var getFollowers = function(uid, age) {
             as comma separated entries.
 */
 var nameFollows = function(uid) {
-  var nameList = '';
-  for (var user in data[uid].follows) {
-    var userId = data[uid].follows[user];
-    nameList += data[userId].name + ', ';
-  }
-  return nameList.slice(0, -2);
+  return idsToName(data[uid].follows).join(', ');
+};
+/*
+  Function Name: nameFollowers
+  Inputs: string
+  Return: string
+  Contract: takes a user id from the data set and returns a string
+            that lists the names of users that follow the input id
+            as comma separated entries.
+*/
+var nameFollowers = function(uid) {
+  return idsToName(getFollowers(uid)).join(', ');
 };
 
-var nameFollowers =
-
-console.log(nameFollows('f01'));
 
 // var listNames = function (data) {
 //   for (var user in data) {
