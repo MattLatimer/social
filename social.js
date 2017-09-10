@@ -118,8 +118,8 @@ var nameFollowers = function(uid) {
 */
 var listConnections = function(uid) {
   var message = 'Name: ' + data[uid].name + '\n';
-  message += 'Follows: ' + nameFollows(uid) + '\n';
-  message += 'Followers: ' + nameFollowers(uid) + '\n';
+  message += '  Follows: ' + nameFollows(uid) + '\n';
+  message += '  Followers: ' + nameFollowers(uid) + '\n';
   return message;
 };
 
@@ -187,7 +187,7 @@ var mostFollowers = function(age) {
 /*
   Function Name: noFollowBack
   Inputs: string
-  Return: string
+  Return: array
   Contract: takes a user id from the data set and returns an array
             of user ids that they follow, but who don't follow them back.
 */
@@ -224,80 +224,43 @@ var listNoFollowBack = function() {
   return message;
 };
 
+/*
+  Function Name: reach
+  Inputs: string
+  Return: number
+  Contract: takes a user id from the data set and returns a number
+            that is the sum of their followers and followers followers.
+*/
+var reach = function(uid) {
+  followers = getFollowers(uid);
+  number = followers.length;
+  for (var i in followers) {
+    number += getFollowers(followers[i]).length;
+  }
+  return number;
+};
 
-// console.log(fullList());
-// console.log('Follows the most others: ' + idsToName(mostFollows()));
-// console.log('Has the most followers: ' + idsToName(mostFollowers()));
-// console.log('Follows the most others over 30: ' + idsToName(mostFollows(30)));
-// console.log('Has the most followers over 30: ' + idsToName(mostFollowers(30)));
-console.log(listNoFollowBack());
-
-
-
-
-// var mostFollowers = function(data) {
-//   var winner = [Object.keys(data)[0]];
-//   for (var user in data) {
-//     if (data[user].followers.length > data[winner[0]].followers.length) {
-//       winner = [user];
-//     } else
-//     if (data[user].followers.length === data[winner[0]].followers.length) {
-//       winner.push(user);
-//     }
-//   }
-//   console.log(winner + ' has the most followers.');
-// };
-
-// var mostFollowsOver30 = function (data) {
-//   var count = {};
-//   for (var user in data) {
-//     count[user] = 0;
-//     for (var i in data[user].follows) {
-//       var userFollow = data[user].follows[i];
-//       if (data[userFollow].age > 30) {
-//         count[user] += 1;
-//       }
-//     }
-//   }
-//   winner = [Object.keys(count)[4]];
-//   for (user in count) {
-//     if (count[user] > count[winner]) {
-//       winner = [user];
-//     } else
-//     if (count[user] === count[winner]) {
-//       winner.push(user);
-//     }
-//   }
-//   console.log(winner + 'follows the most people over 30.');
-// };
-
-// var mostFollowersOver30 = function(data) {
-//   var count = {};
-//   for (var user in data) {
-//     count[user] = 0;
-//     for (var i in data[user].followers) {
-//       var userFollow = data[user].followers[i];
-//       if (data[userFollow].age > 30) {
-//         count[user] += 1;
-//       }
-//     }
-//   }
-//   winner = [Object.keys(count)[2]];
-//   for (user in count) {
-//     if (count[user] > count[winner]) {
-//       winner = [user];
-//     } else
-//     if (count[user] === count[winner]) {
-//       winner.push(user);
-//     }
-//   }
-//   console.log(winner + 'has the most followers over 30.');
-// };
+/*
+  Function Name: listReach
+  Inputs: none
+  Return: string
+  Contract: returns a list of users and their reach (sum of followers and
+            followers of followers, prone to overlap)
+*/
+var listReach = function() {
+  var message = '';
+  for (var user in data) {
+    message += data[user].name + ' has a reach of ' + reach(user) + '\n';
+  }
+  return message;
+}
 
 
-// addFollowers(data);
-// // listNames(data);
-// // mostFollows(data);
-// // mostFollowers(data);
-// mostFollowsOver30(data);
-// mostFollowersOver30(data);
+
+console.log(fullList());
+console.log('Follows the most others: ' + idsToName(mostFollows()));
+console.log('Has the most followers: ' + idsToName(mostFollowers()));
+console.log('Follows the most others over 30: ' + idsToName(mostFollows(30)));
+console.log('Has the most followers over 30: ' + idsToName(mostFollowers(30)));
+console.log('\n' + listNoFollowBack());
+console.log(listReach());
