@@ -125,14 +125,14 @@ var listConnections = function(uid) {
 
 /*
   Function Name: fullList
-  Inputs: object
+  Inputs: none
   Return: string
-  Contract: takes a social network data set and returns a string
-            containing all users names and connections.
+  Contract: returns a string containing all users names
+            and connections.
 */
-var fullList = function (dataSet) {
+var fullList = function () {
   message = '';
-  for (var user in dataSet) {
+  for (var user in data) {
     message += listConnections(user);
   }
   return message;
@@ -140,16 +140,15 @@ var fullList = function (dataSet) {
 
 /*
   Function Name: mostFollows
-  Inputs: object
+  Inputs: none
   Return: array
-  Contract: takes a social network data set and returns an array
-            that lists the user ids that follow the most others.
+  Contract: returns an array that lists the user ids that follow the most others.
             If an age is supplied, only includes users over that age.
 */
-var mostFollows = function(dataSet, age) {
+var mostFollows = function(age) {
   count = {};
   highest = 0;
-  for (var user in dataSet) {
+  for (var user in data) {
     count[user] = data[user].follows.length;
     highest = (count[user] > highest) ? count[user] : highest;
   }
@@ -164,16 +163,15 @@ var mostFollows = function(dataSet, age) {
 
 /*
   Function Name: mostFollowers
-  Inputs: object
+  Inputs: none
   Return: array
-  Contract: takes a social network data set and returns an array
-            that lists the user ids that others follow the most.
+  Contract: returns an array that lists the user ids that others follow the most.
             If an age is supplied, only includes users over that age.
 */
-var mostFollowers = function(dataSet, age) {
+var mostFollowers = function(age) {
   count = {};
   highest = 0;
-  for (var user in dataSet) {
+  for (var user in data) {
     count[user] = getFollowers(user, age).length;
     highest = (count[user] > highest) ? count[user] : highest;
   }
@@ -186,13 +184,53 @@ var mostFollowers = function(dataSet, age) {
   return winners;
 };
 
+/*
+  Function Name: noFollowBack
+  Inputs: string
+  Return: string
+  Contract: takes a user id from the data set and returns an array
+            of user ids that they follow, but who don't follow them back.
+*/
+var noFollowBack = function (uid) {
+  oneWays = [];
+    for (var i in data[uid].follows) {
+      user = data[uid].follows[i];
+      if (!data[user].follows.includes(uid)) {
+        oneWays.push(user);
+      }
+    }
+  return oneWays;
+};
+
+/*
+  Function Name: listNoFollowBack
+  Inputs: none
+  Return: string
+  Contract: returns a string that lists who follows a user that doesn't
+            follow them back, and who that user is.
+*/
+var listNoFollowBack = function() {
+  var message = '';
+  var noBacksies = {};
+  for (var user in data) {
+    var arr = noFollowBack(user);
+    if (arr.length > 0) {
+      noBacksies[user] = arr;
+    }
+  }
+  for (var key in noBacksies) {
+    message += data[key].name + ' is not followed back by ' + idsToName(noBacksies[key]) + '\n';
+  }
+  return message;
+};
 
 
-console.log(fullList(data));
-console.log('Follows the most others: ' + idsToName(mostFollows(data)));
-console.log('Has the most followers: ' + idsToName(mostFollowers(data)));
-console.log('Follows the most others over 30: ' + idsToName(mostFollows(data, 30)));
-console.log('Has the most followers over 30: ' + idsToName(mostFollowers(data, 30)));
+// console.log(fullList());
+// console.log('Follows the most others: ' + idsToName(mostFollows()));
+// console.log('Has the most followers: ' + idsToName(mostFollowers()));
+// console.log('Follows the most others over 30: ' + idsToName(mostFollows(30)));
+// console.log('Has the most followers over 30: ' + idsToName(mostFollowers(30)));
+console.log(listNoFollowBack());
 
 
 
